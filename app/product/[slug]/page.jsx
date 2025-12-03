@@ -52,15 +52,15 @@ export default function ProductPage({ props }) {
                 </nav>
 
                 {/* 2. Main Product Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-24">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-10">
 
                     {/* LEFT: Image Gallery (7 Cols) */}
-                    <div className="lg:col-span-7">
+                    <div className="lg:col-span-6">
                         <ProductGallery images={product.images} name={product.name} />
                     </div>
 
                     {/* RIGHT: Product Details (5 Cols) */}
-                    <div className="lg:col-span-5 relative">
+                    <div className="lg:col-span-6 relative">
                         <div className="sticky top-28">
                             <ProductDetails product={product} />
                         </div>
