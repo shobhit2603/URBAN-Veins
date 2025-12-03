@@ -61,7 +61,7 @@ export default function CartPage() {
 
                         {/* Left: Cart Items List */}
                         <div className="lg:col-span-8 flex flex-col gap-3">
-                            <div className="hidden md:flex justify-between pb-4 border-b border-zinc-200 text-xs font-bold text-zinc-400 uppercase tracking-widest">
+                            <div className="hidden md:flex justify-between pb-4 border-b border-zinc-400 text-xs font-bold text-zinc-800 uppercase tracking-widest">
                                 <span>Product</span>
                                 <div className="flex gap-20 pr-8">
                                     <span>Quantity</span>

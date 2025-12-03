@@ -32,7 +32,7 @@ export default function ProductGallery({ images, name }) {
             </div>
 
             {/* Main Image */}
-            <div className="relative flex-1 bg-zinc-100 rounded-3xl overflow-hidden aspect-square md:aspect-auto md:h-[600px] group">
+            <div className="relative flex-1 bg-zinc-100 rounded-2xl overflow-hidden aspect-square md:aspect-auto md:h-[600px] group">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={activeImage}

@@ -46,8 +46,8 @@ export default function Signup() {
             <div className="absolute inset-0 opacity-[0.4] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-multiply z-0"></div>
 
             {/* 2. Abstract Background Blobs */}
-            <div className="absolute top-[-10%] right-[10%] w-[50vw] h-[50vw] bg-violet-200/50 rounded-full blur-[120px] pointer-events-none mix-blend-multiply animate-pulse" style={{ animationDuration: '8s' }} />
-            <div className="absolute bottom-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-lime-200/40 rounded-full blur-[120px] pointer-events-none mix-blend-multiply animate-pulse" style={{ animationDuration: '10s' }} />
+            <div className="absolute top-[-10%] right-[10%] w-[50vw] h-[50vw] bg-violet-200/80 rounded-full blur-[120px] pointer-events-none mix-blend-multiply animate-pulse" style={{ animationDuration: '8s' }} />
+            <div className="absolute bottom-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-lime-200/60 rounded-full blur-[120px] pointer-events-none mix-blend-multiply animate-pulse" style={{ animationDuration: '10s' }} />
 
             {/* Main Content Wrapper */}
             <div className="relative z-10 flex-1 flex items-center justify-center p-4 md:p-8 pt-20">
@@ -234,7 +234,7 @@ export default function Signup() {
                             {/* Terms Checkbox */}
                             <div className="mt-2">
                                 <label className="flex items-start gap-2 cursor-pointer group">
-                                    <div className="mt-0.5 w-4 h-4 border border-zinc-400 rounded-sm flex items-center justify-center transition-colors group-hover:border-zinc-900 shrink-0">
+                                    <div className="w-4 h-4 border border-zinc-400 rounded-sm flex items-center justify-center transition-colors group-hover:border-zinc-900 shrink-0">
                                         <input type="checkbox" required className="peer hidden" />
                                         <div className="w-2 h-2 bg-violet-500 opacity-0 rounded-full peer-checked:opacity-100 transition-opacity" />
                                     </div>

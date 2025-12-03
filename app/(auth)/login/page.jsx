@@ -31,12 +31,12 @@ export default function LoginPage() {
     return (
         <div className="min-h-screen w-full bg-[#FAFAFA] text-[#0a0a0a] relative overflow-hidden flex flex-col justify-between selection:bg-violet-500 selection:text-white">
 
-            {/* 1. Background Grain (Subtle Light Version) */}
+            {/* 1. Background Grain */}
             <div className="absolute inset-0 opacity-[0.4] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-multiply"></div>
 
-            {/* 2. Abstract Background Blobs (Apple-esque soft gradients) */}
-            <div className="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vw] bg-violet-200/50 rounded-full blur-[120px] pointer-events-none mix-blend-multiply animate-pulse" style={{ animationDuration: '8s' }} />
-            <div className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] bg-lime-200/40 rounded-full blur-[120px] pointer-events-none mix-blend-multiply animate-pulse" style={{ animationDuration: '10s' }} />
+            {/* 2. Abstract Background Blobs */}
+            <div className="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vw] bg-violet-200/80 rounded-full blur-[120px] pointer-events-none mix-blend-multiply animate-pulse" style={{ animationDuration: '8s' }} />
+            <div className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] bg-lime-200/60 rounded-full blur-[120px] pointer-events-none mix-blend-multiply animate-pulse" style={{ animationDuration: '10s' }} />
 
             {/* Main Content Wrapper */}
             <div className="relative z-10 flex-1 flex items-center justify-center p-4 md:p-8 pt-24 md:pt-32">
