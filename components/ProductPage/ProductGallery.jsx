@@ -18,7 +18,7 @@ export default function ProductGallery({ images, name }) {
                         onClick={() => setActiveImage(idx)}
                         className={`relative w-20 h-20 md:w-24 md:h-24 rounded-xl cursor-pointer overflow-hidden border-4 transition-all ${activeImage === idx
                             ? "border-violet-500 opacity-100 scale-95"
-                            : "border-transparent opacity-80 hover:opacity-100"
+                            : "border-transparent opacity-70 hover:opacity-100"
                             }`}
                     >
                         <Image
