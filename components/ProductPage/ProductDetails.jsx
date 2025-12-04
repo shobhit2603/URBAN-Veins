@@ -28,7 +28,12 @@ export default function ProductDetails({ product }) {
     };
 
     return (
-        <div className="flex flex-col gap-6">
+        <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="flex flex-col gap-6 max-sm:-mt-5">
 
             {/* Header */}
             <div>
@@ -149,6 +154,6 @@ export default function ProductDetails({ product }) {
                 ))}
             </div>
 
-        </div>
+        </motion.div>
     );
 }

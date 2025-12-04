@@ -13,7 +13,7 @@ export default function ProductCard({ product, index }) {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.3, delay: index * 0.05 }}
-            className="group relative flex flex-col bg-white overflow-hidden border border-zinc-100 hover:border-zinc-300 hover:rounded-4xl transition-all duration-300 hover:shadow-xl hover:shadow-zinc-200/50 cursor-pointer shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
+            className="group relative flex flex-col bg-white overflow-hidden border border-zinc-100 hover:border-zinc-300 hover:rounded-4xl transition-all duration-300 hover:shadow-xl hover:shadow-zinc-200/50 cursor-pointer"
         >
             {/* Image Container */}
             <Link href={`/product/${product.slug}`} className="relative aspect-4/5 overflow-hidden bg-zinc-100">
@@ -34,7 +34,7 @@ export default function ProductCard({ product, index }) {
                         src={image.src ?? image}
                         alt={product.name}
                         fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-300 ease-in-out"
+                        className="object-cover group-hover:scale-105 transition-transform duration-300 ease-in-out"
                         sizes="(max-width: 768px) 50vw, 25vw"
                     />
                 )}

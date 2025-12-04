@@ -135,7 +135,7 @@ export default function Hero() {
                             <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent z-10" />
 
                             <Image
-                                src="/images/hero2.jpg"
+                                src="/images/hero1.jpg"
                                 alt="Urban Veins Hero Model"
                                 fill
                                 priority
@@ -172,7 +172,7 @@ export default function Hero() {
                     >
                         <div className="relative h-full w-full rounded-lg overflow-hidden border border-white shadow-xl grayscale hover:grayscale-0 transition-all duration-500">
                             <Image
-                                src="/images/hero3.png"
+                                src="/images/hero2.jpg"
                                 alt="Detail Shot"
                                 fill
                                 sizes="200px"

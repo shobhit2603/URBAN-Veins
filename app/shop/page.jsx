@@ -200,7 +200,7 @@ export default function ShopPage() {
                             </div>
                         ) : (
                             // grid-cols-3 -> grid-cols-4 for smaller cards
-                            <motion.div layout className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                            <motion.div layout className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                                 <AnimatePresence mode="popLayout">
                                     {filteredProducts.map((product, index) => (
                                         <ProductCard key={product.slug} product={product} index={index} />

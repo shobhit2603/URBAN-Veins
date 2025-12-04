@@ -8,7 +8,7 @@ export default function ReviewsSection() {
 
     return (
         <div className="pt-10 border-t border-zinc-200">
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center justify-between mb-2">
                 <SectionTitle>Reviews (24)</SectionTitle>
                 <div className="text-right">
                     <div className="text-3xl font-bold text-zinc-900">4.8</div>
@@ -41,7 +41,7 @@ export default function ReviewsSection() {
                     </div>
                     <textarea
                         className="w-full bg-white border border-zinc-200 rounded-xl p-4 text-sm outline-none focus:border-violet-500 transition-colors resize-none"
-                        rows={3}
+                        rows={5}
                         placeholder="How's the fit? What do you think about the quality?"
                     ></textarea>
                     <button className="self-end px-6 py-2 bg-zinc-900 text-white text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-violet-600 transition-colors cursor-pointer">

@@ -37,8 +37,8 @@ export default function ProductPage({ props }) {
             <GrainOverlay />
 
             {/* Background Blobs (Consistent with Shop) */}
-            <div className="absolute top-0 right-0 w-[40vw] h-[40vw] bg-violet-200/40 rounded-full blur-[100px] pointer-events-none mix-blend-multiply" />
-            <div className="absolute bottom-[10%] left-0 w-[40vw] h-[40vw] bg-lime-200/40 rounded-full blur-[100px] pointer-events-none mix-blend-multiply" />
+            <div className="absolute top-0 right-0 w-[40vw] h-[40vw] bg-violet-200/70 rounded-full blur-[100px] pointer-events-none mix-blend-multiply" />
+            <div className="absolute bottom-[10%] left-0 w-[40vw] h-[40vw] bg-lime-200/50 rounded-full blur-[100px] pointer-events-none mix-blend-multiply" />
 
             <div className="container mx-auto px-4 md:px-8 relative z-10">
 

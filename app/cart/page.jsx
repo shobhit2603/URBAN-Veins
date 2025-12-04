@@ -45,7 +45,7 @@ export default function CartPage() {
                         className="flex flex-col items-center justify-center py-20 gap-6 text-center border-t border-zinc-200"
                     >
                         <div className="w-24 h-24 bg-zinc-100 rounded-full flex items-center justify-center mb-4">
-                            <ShoppingBag size={40} className="text-zinc-300" />
+                            <ShoppingBag size={40} className="text-zinc-500" />
                         </div>
                         <h2 className="text-2xl font-bold uppercase">Your cart is ghosting you.</h2>
                         <p className="text-zinc-500 max-w-sm">Looks like you haven&apos;t added any streetwear heat yet.</p>

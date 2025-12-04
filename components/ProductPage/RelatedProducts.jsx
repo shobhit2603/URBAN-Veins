@@ -13,15 +13,15 @@ export default function RelatedProducts({ currentSlug, category }) {
     if (related.length === 0) return null;
 
     return (
-        <section className="border-t border-zinc-200 pt-16">
-            <div className="flex items-center justify-between mb-8">
+        <section className="border-t border-zinc-200 pt-13">
+            <div className="flex items-center justify-between mb-5">
                 <SectionTitle>You Might Also Like</SectionTitle>
-                <Link href="/shop" className="group flex items-center gap-1 text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-violet-600 transition-colors">
+                <Link href="/shop" className="group flex items-center gap-1 text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-violet-600 transition-colors -mt-5">
                     View All <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                 {related.map((item, idx) => (
                     <Link key={idx} href={`/product/${item.slug}`} className="group block">
                         <div className="relative aspect-3/4 bg-zinc-100 hover:rounded-4xl transition-all duration-300 overflow-hidden mb-3">
@@ -40,7 +40,7 @@ export default function RelatedProducts({ currentSlug, category }) {
                             </div>
                         </div>
                         <h5 className="text-sm font-bold text-zinc-900 truncate">{item.name}</h5>
-                        <p className="text-xs text-zinc-500">₹{item.price}</p>
+                        <p className="text-xs text-zinc-700">₹{item.price}</p>
                     </Link>
                 ))}
             </div>

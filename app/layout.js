@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className="antialiased font-[Satoshi-Regular] selection:bg-lime-500 selection:text-white">
+        className="antialiased font-[Satoshi-Regular] selection:bg-violet-500 selection:text-white">
         <ReactLenis root>
           <CartProvider>
             <Navbar />
