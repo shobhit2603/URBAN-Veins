@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { ReactLenis } from "@/lib/lenis";
 import { CartProvider } from "./context/CartContext";
 import { Toaster } from "@/components/ui/sonner";
+import Cursor from "@/components/ui/Cursor";
 
 export const metadata = {
   title: "URBAN Veins",
@@ -18,9 +19,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className="antialiased font-[Satoshi-Regular] selection:bg-violet-500 selection:text-white">
+        className="antialiased font-[Satoshi-Regular] selection:bg-violet-500 selection:text-white cursor-none">
         <ReactLenis root>
           <CartProvider>
+            <Cursor />
             <Navbar />
             {children}
             <Toaster />
