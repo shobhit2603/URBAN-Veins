@@ -29,7 +29,7 @@ export default function ReviewsSection() {
                                 onMouseEnter={() => setHoverRating(star)}
                                 onMouseLeave={() => setHoverRating(0)}
                                 onClick={() => setRating(star)}
-                                className="transition-transform hover:scale-110 focus:outline-none cursor-pointer"
+                                className="transition-transform hover:scale-110 focus:outline-none  "
                             >
                                 <Star
                                     size={24}
@@ -44,7 +44,7 @@ export default function ReviewsSection() {
                         rows={5}
                         placeholder="How's the fit? What do you think about the quality?"
                     ></textarea>
-                    <button className="self-end px-6 py-2 bg-zinc-900 text-white text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-violet-600 transition-colors cursor-pointer">
+                    <button className="self-end px-6 py-2 bg-zinc-900 text-white text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-violet-600 transition-colors  ">
                         Submit Review
                     </button>
                 </div>

@@ -168,14 +168,14 @@ export default function ShopPage() {
                                         {/* Sort Dropdown */}
                                         <div className="relative group">
                                             <Select value={sortBy} onValueChange={setSortBy}>
-                                                <SelectTrigger className="w-[180px] cursor-pointer">
+                                                <SelectTrigger className="w-[180px]  ">
                                                     <SelectValue placeholder="Sort by" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectGroup>
                                                         <SelectLabel>Sort by</SelectLabel>
                                                         {SORT_OPTIONS.map((opt) => (
-                                                            <SelectItem key={opt.value} value={opt.value} className="cursor-pointer">{opt.label}</SelectItem>
+                                                            <SelectItem key={opt.value} value={opt.value} className=" ">{opt.label}</SelectItem>
                                                         ))}
                                                     </SelectGroup>
                                                 </SelectContent>
@@ -233,7 +233,7 @@ export default function ShopPage() {
                         transition={{ duration: 0.25 }}
                         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                         aria-label="Scroll to top"
-                        className="fixed bottom-6 right-4 md:bottom-8 md:right-8 z-40 h-11 w-11 rounded-full bg-black/90 backdrop-blur-sm shadow-lg shadow-violet-900/70 flex items-center justify-center text-zinc-100 hover:-translate-y-1 hover:shadow-xl active:scale-95 transition-all duration-300 cursor-pointer"
+                        className="fixed bottom-6 right-4 md:bottom-8 md:right-8 z-40 h-11 w-11 rounded-full bg-black/90 backdrop-blur-sm shadow-lg shadow-violet-900/70 flex items-center justify-center text-zinc-100 hover:-translate-y-1 hover:shadow-xl active:scale-95 transition-all duration-300  "
                     >
                         <ArrowBigUp className="h-5 w-5" />
                     </motion.button>

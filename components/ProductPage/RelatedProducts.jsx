@@ -34,7 +34,7 @@ export default function RelatedProducts({ currentSlug, category }) {
                             />
                             {/* Quick Add Overlay */}
                             <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                                <button className="w-full py-2 bg-white/90 backdrop-blur text-zinc-900 text-[10px] font-bold uppercase tracking-widest rounded-lg shadow-lg hover:bg-zinc-900 hover:text-white transition-colors cursor-pointer">
+                                <button className="w-full py-2 bg-white/90 backdrop-blur text-zinc-900 text-[10px] font-bold uppercase tracking-widest rounded-lg shadow-lg hover:bg-zinc-900 hover:text-white transition-colors  ">
                                     View Product
                                 </button>
                             </div>

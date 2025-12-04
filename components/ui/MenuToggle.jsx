@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 export const MenuToggle = ({ isOpen, toggle }) => (
     <button
         onClick={toggle}
-        className="relative z-50 p-2 group focus:outline-none mix-blend-difference cursor-pointer"
+        className="relative z-50 p-2 group focus:outline-none mix-blend-difference  "
         aria-label="Toggle Menu"
     >
         <div className="flex flex-col gap-1.5 items-start justify-center w-8">

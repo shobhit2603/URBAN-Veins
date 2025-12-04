@@ -104,11 +104,11 @@ export default function Signup() {
                             {/* Social Signup */}
                             <div className="mt-2">
                                 <div className="grid grid-cols-2 gap-4 mt-2">
-                                    <button type="button" className="flex items-center justify-center border border-zinc-400 rounded-lg py-2 cursor-pointer hover:bg-neutral-100/50 transition-colors">
+                                    <button type="button" className="flex items-center justify-center border border-zinc-400 rounded-lg py-2   hover:bg-neutral-100/50 transition-colors">
                                         <Image src="/Google-Icon.svg" alt="Google" width={20} height={20} className="mr-2" />
                                         Google
                                     </button>
-                                    <button type="button" className="flex items-center justify-center border border-zinc-400 rounded-lg py-2 cursor-pointer hover:bg-neutral-100/50 transition-colors">
+                                    <button type="button" className="flex items-center justify-center border border-zinc-400 rounded-lg py-2   hover:bg-neutral-100/50 transition-colors">
                                         <Image src="/Facebook-Icon.svg" alt="Facebook" width={20} height={20} className="mr-2" />
                                         Facebook
                                     </button>
@@ -233,7 +233,7 @@ export default function Signup() {
 
                             {/* Terms Checkbox */}
                             <div className="mt-2">
-                                <label className="flex items-start gap-2 cursor-pointer group">
+                                <label className="flex items-start gap-2   group">
                                     <div className="w-4 h-4 border border-zinc-400 rounded-sm flex items-center justify-center transition-colors group-hover:border-zinc-900 shrink-0">
                                         <input type="checkbox" required className="peer hidden" />
                                         <div className="w-2 h-2 bg-violet-500 opacity-0 rounded-full peer-checked:opacity-100 transition-opacity" />
@@ -247,7 +247,7 @@ export default function Signup() {
                             {/* Create Account Button */}
                             <button
                                 disabled={isLoading}
-                                className="relative w-full h-14 mt-4 overflow-hidden rounded-full bg-[#0a0a0a] group disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+                                className="relative w-full h-14 mt-4 overflow-hidden rounded-full bg-[#0a0a0a] group disabled:opacity-70 disabled:cursor-not-allowed  "
                             >
                                 <div className="absolute inset-0 w-full h-full bg-violet-500 translate-y-full transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:translate-y-0" />
                                 <motion.span
