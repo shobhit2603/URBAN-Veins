@@ -4,6 +4,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Eye, EyeOff, ArrowRight, User, Phone } from "lucide-react";
 import Image from "next/image";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const Link = ({ href, children, className, ...props }) => (
     <a href={href} className={className} {...props}>
@@ -22,21 +24,76 @@ export default function Signup() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [focusedField, setFocusedField] = useState(null);
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
+
+    const router = useRouter();
 
     const handleInputChange = (e) => {
         const { id, value } = e.target;
         setFormData(prev => ({ ...prev, [id]: value }));
     };
 
-    // Mock Signup Function
+    // REAL Signup Function (calls /api/auth/register)
     const handleSignup = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        setIsLoading(false);
-        console.log("Form Submitted:", formData);
-        // Add redirect logic here
+        setError("");
+        setSuccess("");
+
+        try {
+            const res = await fetch("/api/auth/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: formData.fullName,
+                    email: formData.email,
+                    password: formData.password,
+                    mobile: formData.phone,
+                }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                setError(data.error || "Failed to create account.");
+                setIsLoading(false);
+                return;
+            }
+
+            setSuccess("Account created successfully. Logging you in...");
+            // Auto-login the user using credentials
+            const loginRes = await signIn("credentials", {
+                email: formData.email,
+                password: formData.password,
+                redirect: false,
+            });
+
+            setIsLoading(false);
+
+            if (loginRes?.error) {
+                // If auto-login fails, send user to login page
+                router.push("/login");
+            } else {
+                router.push("/");
+            }
+        } catch (err) {
+            console.error("Signup error:", err);
+            setError("Something went wrong. Please try again.");
+            setIsLoading(false);
+        }
+    };
+
+    const handleGoogleSignup = () => {
+        setError("");
+        setSuccess("");
+        signIn("google", { callbackUrl: "/" });
+    };
+
+    const handleAppleSignup = () => {
+        setError("");
+        setSuccess("");
+        signIn("apple", { callbackUrl: "/" });
     };
 
     return (
@@ -101,16 +158,36 @@ export default function Signup() {
                                 <p className="text-zinc-500 text-sm">Be a part of the Urban Veins movement.</p>
                             </div>
 
+                            {/* Error / Success */}
+                            {error && (
+                                <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">
+                                    {error}
+                                </p>
+                            )}
+                            {success && (
+                                <p className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-md px-3 py-2">
+                                    {success}
+                                </p>
+                            )}
+
                             {/* Social Signup */}
                             <div className="mt-2">
                                 <div className="grid grid-cols-2 gap-4 mt-2">
-                                    <button type="button" className="flex items-center justify-center border border-zinc-400 rounded-lg py-2   hover:bg-neutral-100/50 transition-colors">
+                                    <button
+                                        type="button"
+                                        onClick={handleGoogleSignup}
+                                        className="flex items-center justify-center border border-zinc-400 rounded-lg py-2   hover:bg-neutral-100/50 transition-colors"
+                                    >
                                         <Image src="/Google-Icon.svg" alt="Google" width={20} height={20} className="mr-2" />
                                         Google
                                     </button>
-                                    <button type="button" className="flex items-center justify-center border border-zinc-400 rounded-lg py-2   hover:bg-neutral-100/50 transition-colors">
-                                        <Image src="/Facebook-Icon.svg" alt="Facebook" width={20} height={20} className="mr-2" />
-                                        Facebook
+                                    <button
+                                        type="button"
+                                        onClick={handleAppleSignup}
+                                        className="flex items-center justify-center border border-zinc-400 rounded-lg py-2   hover:bg-neutral-100/50 transition-colors"
+                                    >
+                                        <Image src="/Facebook-Icon.svg" alt="Apple" width={20} height={20} className="mr-2" />
+                                        Apple
                                     </button>
                                 </div>
 

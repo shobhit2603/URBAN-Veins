@@ -1,9 +1,11 @@
 'use client';
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { motion } from "framer-motion";
 import { Mail, Eye, EyeOff, ArrowRight } from "lucide-react";
 import Image from "next/image";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const Link = ({ href, children, className, ...props }) => (
     <a href={href} className={className} {...props}>
@@ -17,15 +19,42 @@ export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [focusedField, setFocusedField] = useState(null);
+    const [error, setError] = useState("");
 
-    // Mock Login Function
+    const router = useRouter();
+
+    // REAL Login Function (NextAuth credentials)
     const handleLogin = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        setError("");
+
+        const res = await signIn("credentials", {
+            email,
+            password,
+            redirect: false,        // handle redirect manually
+        });
+
         setIsLoading(false);
-        // Add redirect logic here
+
+        if (res?.error) {
+            setError(res.error);
+        } else {
+            router.push("/");       // go to home or /shop etc.
+        }
+    };
+
+    const handleGoogleLogin = () => {
+        setError("");
+        signIn("google", { callbackUrl: "/" });
+    };
+
+    // NOTE: You said you want Apple, not Facebook.
+    // This button currently shows a Facebook icon, but calls the Apple provider.
+    // Later you can replace the icon with Apple logo.
+    const handleAppleLogin = () => {
+        setError("");
+        signIn("apple", { callbackUrl: "/" });
     };
 
     return (
@@ -89,6 +118,13 @@ export default function LoginPage() {
                                 <h2 className="text-4xl font-[Stardom-Regular] font-bold tracking-tighter">WELCOME <span className="text-zinc-400">BACK.</span></h2>
                                 <p className="text-zinc-500 text-sm mt-2">Enter your credentials to access the cult.</p>
                             </div>
+
+                            {/* Error message */}
+                            {error && (
+                                <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">
+                                    {error}
+                                </p>
+                            )}
 
                             {/* Email Field */}
                             <div className="group relative">
@@ -162,7 +198,7 @@ export default function LoginPage() {
                                 </Link>
                             </div>
 
-                            {/* Modern Magnetic/Fill Button */}
+                            {/* Submit Button */}
                             <button
                                 disabled={isLoading}
                                 className="relative w-full h-14 mt-6 overflow-hidden rounded-full bg-[#0a0a0a] group disabled:opacity-70 disabled:cursor-not-allowed  "
@@ -196,13 +232,21 @@ export default function LoginPage() {
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4 mt-4">
-                                    <button type="button" className="flex items-center justify-center border border-zinc-400 rounded-lg py-2   hover:bg-neutral-100/50 transition-colors">
+                                    <button
+                                        type="button"
+                                        onClick={handleGoogleLogin}
+                                        className="flex items-center justify-center border border-zinc-400 rounded-lg py-2   hover:bg-neutral-100/50 transition-colors"
+                                    >
                                         <Image src="/Google-Icon.svg" alt="Google logo" width={20} height={20} className="mr-2" />
                                         Google
                                     </button>
-                                    <button type="button" className="flex items-center justify-center border border-zinc-400 rounded-lg py-2   hover:bg-neutral-100/50 transition-colors">
-                                        <Image src="/Facebook-Icon.svg" alt="Google logo" width={20} height={20} className="mr-2" />
-                                        Facebook
+                                    <button
+                                        type="button"
+                                        onClick={handleAppleLogin}
+                                        className="flex items-center justify-center border border-zinc-400 rounded-lg py-2   hover:bg-neutral-100/50 transition-colors"
+                                    >
+                                        <Image src="/Facebook-Icon.svg" alt="Apple login" width={20} height={20} className="mr-2" />
+                                        Apple
                                     </button>
                                 </div>
                             </div >
