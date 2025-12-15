@@ -50,7 +50,7 @@ export default function CartPage() {
                         <h2 className="text-2xl font-bold uppercase">Your cart is ghosting you.</h2>
                         <p className="text-zinc-500 max-w-sm">Looks like you haven&apos;t added any streetwear heat yet.</p>
                         <Link href="/shop">
-                            <button className="mt-4 px-8 py-3 bg-zinc-900 text-white rounded-full font-bold uppercase tracking-widest hover:bg-violet-600 transition-colors cursor-pointer">
+                            <button className="mt-4 px-8 py-3 bg-zinc-900 text-white rounded-full font-bold uppercase tracking-widest hover:bg-violet-600 transition-colors  ">
                                 Go Shop
                             </button>
                         </Link>
@@ -109,7 +109,7 @@ export default function CartPage() {
 
                                                 <button
                                                     onClick={() => removeFromCart(item.slug, item.selectedSize, item.selectedColor)}
-                                                    className="flex items-center gap-2 text-xs font-bold text-red-400 hover:text-red-600 uppercase tracking-wider mt-4 w-fit transition-colors cursor-pointer"
+                                                    className="flex items-center gap-2 text-xs font-bold text-red-400 hover:text-red-600 uppercase tracking-wider mt-4 w-fit transition-colors  "
                                                 >
                                                     <Trash2 size={14} /> Remove
                                                 </button>
@@ -121,14 +121,14 @@ export default function CartPage() {
                                                 <div className="flex items-center gap-4 bg-zinc-50 rounded-full px-4 py-2 border border-zinc-200">
                                                     <button
                                                         onClick={() => updateQuantity(item.slug, item.selectedSize, item.selectedColor, item.quantity - 1)}
-                                                        className="hover:text-violet-600 transition-colors cursor-pointer"
+                                                        className="hover:text-violet-600 transition-colors  "
                                                     >
                                                         <Minus size={14} />
                                                     </button>
                                                     <span className="font-bold w-4 text-center text-sm">{item.quantity}</span>
                                                     <button
                                                         onClick={() => updateQuantity(item.slug, item.selectedSize, item.selectedColor, item.quantity + 1)}
-                                                        className="hover:text-violet-600 transition-colors cursor-pointer"
+                                                        className="hover:text-violet-600 transition-colors  "
                                                     >
                                                         <Plus size={14} />
                                                     </button>
@@ -170,7 +170,7 @@ export default function CartPage() {
                                 </div>
 
                                 {/* Magnetic Checkout Button */}
-                                <button className="relative w-full h-14 overflow-hidden rounded-full bg-zinc-900 group cursor-pointer">
+                                <button className="relative w-full h-14 overflow-hidden rounded-full bg-zinc-900 group  ">
                                     <div className="absolute inset-0 w-full h-full bg-lime-400 translate-y-full transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:translate-y-0" />
 
                                     <span className="relative z-10 w-full h-full flex items-center justify-center gap-2 text-white transition-colors duration-500 group-hover:text-zinc-900 font-bold tracking-widest text-sm uppercase">

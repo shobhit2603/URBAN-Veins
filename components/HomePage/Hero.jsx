@@ -152,7 +152,7 @@ export default function Hero() {
                         {/* Interactive "Shop" Button Overlay */}
                         <Link href="/shop" className="absolute -right-12 top-1/2 -translate-y-1/2 z-30">
                             <MagneticButton>
-                                <div className="h-24 w-24 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center border border-zinc-200 shadow-lg cursor-pointer group-hover:scale-110 transition-transform duration-300">
+                                <div className="h-24 w-24 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center border border-zinc-200 shadow-lg   group-hover:scale-110 transition-transform duration-300">
                                     <ArrowDownRight size={32} className="text-zinc-900 group-hover:-rotate-45 transition-transform duration-300" />
                                 </div>
                             </MagneticButton>

@@ -41,7 +41,7 @@ export default function ProductDetails({ product }) {
                     <h1 className="text-3xl md:text-5xl font-[Stardom-Regular] font-black text-zinc-900 leading-[0.9] uppercase mb-2">
                         {product.name}
                     </h1>
-                    <button className="p-2 rounded-full hover:bg-zinc-100 text-zinc-400 hover:text-red-500 transition-colors cursor-pointer">
+                    <button className="p-2 rounded-full hover:bg-zinc-100 text-zinc-400 hover:text-red-500 transition-colors  ">
                         <Heart size={24} />
                     </button>
                 </div>
@@ -77,7 +77,7 @@ export default function ProductDetails({ product }) {
                             <button
                                 key={i}
                                 onClick={() => setSelectedColor(color)}
-                                className={`group relative px-4 py-2 rounded-lg border cursor-pointer text-sm font-medium transition-all ${selectedColor === color
+                                className={`group relative px-4 py-2 rounded-lg border   text-sm font-medium transition-all ${selectedColor === color
                                     ? "border-violet-600 bg-violet-50 text-violet-700 shadow-sm"
                                     : "border-zinc-200 text-zinc-600 hover:border-zinc-400"
                                     }`}
@@ -98,14 +98,14 @@ export default function ProductDetails({ product }) {
                 <div className="space-y-3">
                     <div className="flex justify-between items-center">
                         <span className="text-xs font-bold uppercase tracking-widest text-zinc-400">Select Size</span>
-                        <button className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 hover:text-zinc-900 underline cursor-pointer">Size Chart</button>
+                        <button className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 hover:text-zinc-900 underline  ">Size Chart</button>
                     </div>
                     <div className="grid grid-cols-4 gap-2">
                         {sizes.map((size, i) => (
                             <button
                                 key={i}
                                 onClick={() => setSelectedSize(size)}
-                                className={`h-12 w-full rounded-xl cursor-pointer border text-sm font-bold transition-all uppercase ${selectedSize === size
+                                className={`h-12 w-full rounded-xl   border text-sm font-bold transition-all uppercase ${selectedSize === size
                                     ? "bg-zinc-900 text-white border-zinc-900 shadow-lg"
                                     : "bg-white text-zinc-900 border-zinc-200 hover:border-zinc-400"
                                     }`}
@@ -124,22 +124,22 @@ export default function ProductDetails({ product }) {
                 <div className="flex gap-3 h-14">
                     {/* Quantity */}
                     <div className="w-32 bg-zinc-100 rounded-full flex items-center justify-between px-4 border border-zinc-200">
-                        <button onClick={() => setQty(Math.max(1, qty - 1))} className="p-1 hover:text-violet-600 cursor-pointer"><Minus size={16} /></button>
+                        <button onClick={() => setQty(Math.max(1, qty - 1))} className="p-1 hover:text-violet-600  "><Minus size={16} /></button>
                         <span className="font-bold text-zinc-900">{qty}</span>
-                        <button onClick={() => setQty(qty + 1)} className="p-1 hover:text-violet-600 cursor-pointer"><Plus size={16} /></button>
+                        <button onClick={() => setQty(qty + 1)} className="p-1 hover:text-violet-600  "><Plus size={16} /></button>
                     </div>
 
                     {/* Add to Cart */}
                     <button
                         onClick={handleAddToCart}
-                        className="flex-1 bg-zinc-900 text-white rounded-full font-bold uppercase tracking-widest text-sm hover:bg-violet-600 transition-colors shadow-lg flex items-center justify-center gap-2 group cursor-pointer">
+                        className="flex-1 bg-zinc-900 text-white rounded-full font-bold uppercase tracking-widest text-sm hover:bg-violet-600 transition-colors shadow-lg flex items-center justify-center gap-2 group  ">
                         <ShoppingBag size={18} className="group-hover:-translate-x-1 transition-transform" />
                         Add to Cart
                     </button>
                 </div>
 
                 {/* Buy Now */}
-                <button className="group w-full h-14 bg-lime-400 text-zinc-900 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-lime-300 transition-colors shadow-[0_0_20px_rgba(163,230,53,0.4)] flex items-center justify-center gap-2 cursor-pointer">
+                <button className="group w-full h-14 bg-lime-400 text-zinc-900 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-lime-300 transition-colors shadow-[0_0_20px_rgba(163,230,53,0.4)] flex items-center justify-center gap-2  ">
                     <Zap size={18} fill="currentColor" className="group-hover:-translate-x-1 transition-transform" />
                     Buy It Now
                 </button>

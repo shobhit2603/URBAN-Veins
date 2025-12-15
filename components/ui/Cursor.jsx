@@ -76,8 +76,8 @@ export default function Cursor() {
                     translateY: '-50%',
                 }}
                 animate={{
-                    width: isHovered ? 64 : 32, // Expands on hover
-                    height: isHovered ? 64 : 32,
+                    width: isHovered ? 45 : 32, // Expands on hover
+                    height: isHovered ? 45 : 32,
                     opacity: isHovered ? 0.8 : 0.4,
                     backgroundColor: isHovered ? 'rgba(163, 230, 53, 0.1)' : 'transparent', // Lime tint on hover
                     scale: isClicking ? 0.8 : 1, // Shrink on click
@@ -87,7 +87,7 @@ export default function Cursor() {
 
             {/* 6. The "Dot" (Violet) - Instant movement */}
             <motion.div
-                className="absolute left-0 top-0 rounded-full bg-violet-500"
+                className="absolute left-0 top-0 rounded-full bg-violet-600"
                 style={{
                     x: mouseX,
                     y: mouseY,

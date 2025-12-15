@@ -6,10 +6,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "images.unsplash.com",
+        hostname: "res.cloudinary.com",
       },
     ],
   },
+
 };
 
 export default nextConfig;

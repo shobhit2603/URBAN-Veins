@@ -4,6 +4,9 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Eye, EyeOff, ArrowRight, User, Phone } from "lucide-react";
 import Image from "next/image";
+// --- NEW IMPORTS ---
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const Link = ({ href, children, className, ...props }) => (
     <a href={href} className={className} {...props}>
@@ -22,21 +25,59 @@ export default function Signup() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [focusedField, setFocusedField] = useState(null);
+    
+    // --- NEW: Router for redirection ---
+    const router = useRouter();
 
     const handleInputChange = (e) => {
         const { id, value } = e.target;
         setFormData(prev => ({ ...prev, [id]: value }));
     };
 
-    // Mock Signup Function
+    // --- NEW: Handle Signup & Auto-Login ---
     const handleSignup = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        setIsLoading(false);
-        console.log("Form Submitted:", formData);
-        // Add redirect logic here
+
+        try {
+            // 1. Register User
+            const res = await fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                console.log("Success:", data.message);
+                
+                // 2. Auto-Login if registration success
+                const loginResult = await signIn("credentials", {
+                    redirect: false,
+                    email: formData.email,
+                    password: formData.password,
+                });
+
+                if (loginResult?.error) {
+                    console.error("Auto-login failed:", loginResult.error);
+                    router.push('/login'); // Fallback
+                } else {
+                    router.refresh();
+                    router.push('/'); // Redirect to Home
+                }
+            } else {
+                console.error("Error:", data.message);
+                alert(data.message || "Registration failed."); // Simple feedback
+                setIsLoading(false);
+            }
+        } catch (error) {
+            console.error("Network Error:", error);
+            alert("Something went wrong. Please try again.");
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -104,11 +145,20 @@ export default function Signup() {
                             {/* Social Signup */}
                             <div className="mt-2">
                                 <div className="grid grid-cols-2 gap-4 mt-2">
-                                    <button type="button" className="flex items-center justify-center border border-zinc-400 rounded-lg py-2 cursor-pointer hover:bg-neutral-100/50 transition-colors">
+                                    {/* --- ADDED onClick HANDLERS --- */}
+                                    <button 
+                                        type="button" 
+                                        onClick={() => signIn('google', { callbackUrl: '/' })}
+                                        className="flex items-center justify-center border border-zinc-400 rounded-lg py-2 hover:bg-neutral-100/50 transition-colors"
+                                    >
                                         <Image src="/Google-Icon.svg" alt="Google" width={20} height={20} className="mr-2" />
                                         Google
                                     </button>
-                                    <button type="button" className="flex items-center justify-center border border-zinc-400 rounded-lg py-2 cursor-pointer hover:bg-neutral-100/50 transition-colors">
+                                    <button 
+                                        type="button" 
+                                        onClick={() => signIn('facebook', { callbackUrl: '/' })}
+                                        className="flex items-center justify-center border border-zinc-400 rounded-lg py-2 hover:bg-neutral-100/50 transition-colors"
+                                    >
                                         <Image src="/Facebook-Icon.svg" alt="Facebook" width={20} height={20} className="mr-2" />
                                         Facebook
                                     </button>
@@ -126,7 +176,7 @@ export default function Signup() {
                                 <label
                                     htmlFor="fullName"
                                     className={`absolute left-0 transition-all duration-300 pointer-events-none font-medium
-                                        ${focusedField === 'fullName' || formData.fullName ? '-top-5 text-xs text-violet-600' : 'top-3 text-zinc-500 text-base'}
+                                    ${focusedField === 'fullName' || formData.fullName ? '-top-5 text-xs text-violet-600' : 'top-3 text-zinc-500 text-base'}
                                     `}
                                 >
                                     FULL NAME
@@ -152,7 +202,7 @@ export default function Signup() {
                                 <label
                                     htmlFor="email"
                                     className={`absolute left-0 transition-all duration-300 pointer-events-none font-medium
-                                        ${focusedField === 'email' || formData.email ? '-top-5 text-xs text-violet-600' : 'top-3 text-zinc-500 text-base'}
+                                    ${focusedField === 'email' || formData.email ? '-top-5 text-xs text-violet-600' : 'top-3 text-zinc-500 text-base'}
                                     `}
                                 >
                                     EMAIL ADDRESS
@@ -178,7 +228,7 @@ export default function Signup() {
                                 <label
                                     htmlFor="phone"
                                     className={`absolute left-0 transition-all duration-300 pointer-events-none font-medium
-                                        ${focusedField === 'phone' || formData.phone ? '-top-5 text-xs text-violet-600' : 'top-3 text-zinc-500 text-base'}
+                                    ${focusedField === 'phone' || formData.phone ? '-top-5 text-xs text-violet-600' : 'top-3 text-zinc-500 text-base'}
                                     `}
                                 >
                                     PHONE NUMBER
@@ -204,7 +254,7 @@ export default function Signup() {
                                 <label
                                     htmlFor="password"
                                     className={`absolute left-0 transition-all duration-300 pointer-events-none font-medium
-                                        ${focusedField === 'password' || formData.password ? '-top-5 text-xs text-violet-600' : 'top-3 text-zinc-500 text-base'}
+                                    ${focusedField === 'password' || formData.password ? '-top-5 text-xs text-violet-600' : 'top-3 text-zinc-500 text-base'}
                                     `}
                                 >
                                     CREATE PASSWORD
@@ -233,7 +283,7 @@ export default function Signup() {
 
                             {/* Terms Checkbox */}
                             <div className="mt-2">
-                                <label className="flex items-start gap-2 cursor-pointer group">
+                                <label className="flex items-start gap-2   group">
                                     <div className="w-4 h-4 border border-zinc-400 rounded-sm flex items-center justify-center transition-colors group-hover:border-zinc-900 shrink-0">
                                         <input type="checkbox" required className="peer hidden" />
                                         <div className="w-2 h-2 bg-violet-500 opacity-0 rounded-full peer-checked:opacity-100 transition-opacity" />
@@ -247,9 +297,10 @@ export default function Signup() {
                             {/* Create Account Button */}
                             <button
                                 disabled={isLoading}
-                                className="relative w-full h-14 mt-4 overflow-hidden rounded-full bg-[#0a0a0a] group disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+                                className="relative w-full h-14 mt-4 overflow-hidden rounded-full bg-[#0a0a0a] group disabled:opacity-70 disabled:cursor-not-allowed  "
                             >
                                 <div className="absolute inset-0 w-full h-full bg-violet-500 translate-y-full transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:translate-y-0" />
+
                                 <motion.span
                                     whileHover={{ scale: 1.05 }}
                                     className="relative z-10 w-full h-full flex items-center justify-center gap-2 text-white transition-colors duration-500 group-hover:text-white font-bold tracking-widest text-sm uppercase">

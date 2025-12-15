@@ -1,10 +1,9 @@
 'use client';
 
 import Link from "next/link";
-import { useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { ShieldCheck, Truck } from "lucide-react";
-import { products } from "@/public/images";
+import { ShieldCheck, Truck, Loader2, AlertCircle } from "lucide-react";
 
 import RelatedProducts from "@/components/ProductPage/RelatedProducts";
 import ReviewsSection from "@/components/ProductPage/ReviewsSection";
@@ -20,17 +19,58 @@ const GrainOverlay = () => (
 
 // --- MAIN PAGE COMPONENT ---
 
-export default function ProductPage({ props }) {
+export default function ProductPage() {
     const params = useParams();
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const product = useMemo(() => {
-        if (!params.slug) return null;
-        return products.find(p => p.slug === params.slug) || null;
+    useEffect(() => {
+        if (!params.slug) return;
+
+        const fetchProduct = async () => {
+            try {
+                setLoading(true);
+                const res = await fetch(`/api/products/${params.slug}`);
+                
+                if (!res.ok) {
+                    if (res.status === 404) throw new Error("Product not found");
+                    throw new Error("Failed to load product");
+                }
+
+                const data = await res.json();
+                setProduct(data.product);
+            } catch (err) {
+                console.error("Error fetching product:", err);
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProduct();
     }, [params.slug]);
 
-    if (!params.slug) return <div className="min-h-screen bg-[#FAFAFA] flex items-center justify-center"><div className="w-8 h-8 border-4 border-violet-500 border-t-transparent rounded-full animate-spin"></div></div>;
-    if (!product) return <div className="min-h-screen flex items-center justify-center text-zinc-500">Product not found.</div>;
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-[#FAFAFA] flex flex-col items-center justify-center gap-4">
+                <Loader2 className="w-10 h-10 text-violet-600 animate-spin" />
+                <p className="text-zinc-500 animate-pulse">Loading product details...</p>
+            </div>
+        );
+    }
 
+    if (error || !product) {
+        return (
+            <div className="min-h-screen bg-[#FAFAFA] flex flex-col items-center justify-center gap-4 text-zinc-500">
+                <AlertCircle className="w-10 h-10 text-red-400" />
+                <p className="text-lg font-medium">{error || "Product not found"}</p>
+                <Link href="/shop" className="text-violet-600 hover:underline">
+                    Back to Shop
+                </Link>
+            </div>
+        );
+    }
 
     return (
         <main className="relative min-h-screen bg-[#FAFAFA] pt-24 pb-20 overflow-x-hidden">
@@ -71,7 +111,8 @@ export default function ProductPage({ props }) {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 border-t border-zinc-200 pt-16 mb-20">
                     <div className="lg:col-span-7 space-y-16">
                         <DescriptionSection description={product.description} />
-                        <ReviewsSection />
+                        {/* We pass the productId to ReviewsSection so it can fetch reviews later if needed */}
+                        <ReviewsSection productId={product._id} />
                     </div>
                     <div className="lg:col-span-5">
                         {/* Additional contextual info */}

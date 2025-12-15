@@ -11,7 +11,7 @@ export default function FilterSection({ label, options, value, onChange }) {
                         <button
                             key={opt}
                             onClick={() => onChange(opt)}
-                            className={`group flex items-center justify-between w-full text-left py-1.5 px-2 rounded-lg text-sm transition-all ${isActive ? "bg-zinc-100 text-zinc-900 font-medium" : "text-zinc-500 hover:bg-zinc-50 hover:text-zinc-900 cursor-pointer"
+                            className={`group flex items-center justify-between w-full text-left py-1.5 px-2 rounded-lg text-sm transition-all ${isActive ? "bg-zinc-100 text-zinc-900 font-medium" : "text-zinc-500 hover:bg-zinc-50 hover:text-zinc-900  "
                                 }`}
                         >
                             <span className="capitalize">{opt.replace("-", " ")}</span>

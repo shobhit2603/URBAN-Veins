@@ -10,7 +10,7 @@ export default function FilterPanel({ category, setCategory, idealFor, setIdealF
             <div className="flex items-baseline justify-between">
                 <h3 className="text-sm font-bold text-zinc-900 uppercase tracking-widest">Filters</h3>
                 {activeCount > 0 && (
-                    <button onClick={clearAll} className="text-[10px] font-semibold text-violet-600 hover:text-violet-700 uppercase tracking-wider cursor-pointer">
+                    <button onClick={clearAll} className="text-[10px] font-semibold text-violet-600 hover:text-violet-700 uppercase tracking-wider  ">
                         Reset All
                     </button>
                 )}

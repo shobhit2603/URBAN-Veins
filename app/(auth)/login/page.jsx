@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Eye, EyeOff, ArrowRight } from "lucide-react";
 import Image from "next/image";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const Link = ({ href, children, className, ...props }) => (
     <a href={href} className={className} {...props}>
@@ -17,15 +19,38 @@ export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [focusedField, setFocusedField] = useState(null);
+    const [error, setError] = useState("");
 
-    // Mock Login Function
+    const router = useRouter();
+
     const handleLogin = async (e) => {
         e.preventDefault();
+        setError("");
         setIsLoading(true);
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        setIsLoading(false);
-        // Add redirect logic here
+
+        try {
+            const result = await signIn("credentials", {
+                redirect: false, // Don't redirect automatically, we'll handle it
+                email: email,
+                password: password,
+            });
+
+            if (result?.error) {
+                // Login failed
+                setError("Invalid email or password");
+                console.error("Login Failed:", result.error);
+            } else {
+                // Login successful
+                console.log("Login Successful!");
+                router.refresh(); // Refresh to update session state
+                router.push("/"); // Redirect to homepage
+            }
+        } catch (error) {
+            console.error("Unexpected Error:", error);
+            setError("Something went wrong. Please try again.");
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -141,7 +166,7 @@ export default function LoginPage() {
                                     <button
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute right-0 top-3 hover:text-violet-600 transition-colors text-zinc-400 cursor-pointer"
+                                        className="absolute right-0 top-3 hover:text-violet-600 transition-colors text-zinc-400  "
                                     >
                                         {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                                     </button>
@@ -150,7 +175,7 @@ export default function LoginPage() {
 
                             {/* Utility Links */}
                             <div className="flex justify-between items-center text-xs font-medium tracking-wide">
-                                <label className="flex items-center gap-2 cursor-pointer group">
+                                <label className="flex items-center gap-2   group">
                                     <div className="w-4 h-4 border border-zinc-300 rounded-sm flex items-center justify-center transition-colors group-hover:border-zinc-900">
                                         <input type="checkbox" className="peer hidden" />
                                         <div className="w-2 h-2 bg-violet-500 opacity-0 rounded-full peer-checked:opacity-100 transition-opacity" />
@@ -165,7 +190,7 @@ export default function LoginPage() {
                             {/* Modern Magnetic/Fill Button */}
                             <button
                                 disabled={isLoading}
-                                className="relative w-full h-14 mt-6 overflow-hidden rounded-full bg-[#0a0a0a] group disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+                                className="relative w-full h-14 mt-6 overflow-hidden rounded-full bg-[#0a0a0a] group disabled:opacity-70 disabled:cursor-not-allowed  "
                             >
                                 <div className="absolute inset-0 w-full h-full bg-violet-500 translate-y-full transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:translate-y-0" />
 
@@ -196,11 +221,11 @@ export default function LoginPage() {
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4 mt-4">
-                                    <button type="button" className="flex items-center justify-center border border-zinc-400 rounded-lg py-2 cursor-pointer hover:bg-neutral-100/50 transition-colors">
+                                    <button type="button" className="flex items-center justify-center border border-zinc-400 rounded-lg py-2   hover:bg-neutral-100/50 transition-colors">
                                         <Image src="/Google-Icon.svg" alt="Google logo" width={20} height={20} className="mr-2" />
                                         Google
                                     </button>
-                                    <button type="button" className="flex items-center justify-center border border-zinc-400 rounded-lg py-2 cursor-pointer hover:bg-neutral-100/50 transition-colors">
+                                    <button type="button" className="flex items-center justify-center border border-zinc-400 rounded-lg py-2   hover:bg-neutral-100/50 transition-colors">
                                         <Image src="/Facebook-Icon.svg" alt="Google logo" width={20} height={20} className="mr-2" />
                                         Facebook
                                     </button>

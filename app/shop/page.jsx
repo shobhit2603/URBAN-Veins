@@ -1,9 +1,9 @@
 "use client";
 
 import { useMemo, useState, useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { SlidersHorizontal, Search, ArrowBigUp } from "lucide-react";
-import { products } from "@/public/images";
+import { motion, AnimatePresence } from "framer-motion"; // Fixed import: 'motion/react' -> 'framer-motion'
+import { SlidersHorizontal, Search, ArrowBigUp, Loader2 } from "lucide-react";
+
 import {
     Select,
     SelectContent,
@@ -27,6 +27,9 @@ const SORT_OPTIONS = [
 
 export default function ShopPage() {
     // --- State ---
+    const [products, setProducts] = useState([]); // NEW: Store fetched products
+    const [isLoading, setIsLoading] = useState(true); // NEW: Loading state
+    
     const [category, setCategory] = useState("All");
     const [idealFor, setIdealFor] = useState("All");
     const [type, setType] = useState("All");
@@ -34,40 +37,61 @@ export default function ShopPage() {
     const [search, setSearch] = useState("");
     const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
 
-    // Note: 'scrolled' state kept to minimize logic changes, though sticky behavior is removed.
     const [scrolled, setScrolled] = useState(false);
     const [showScrollTop, setShowScrollTop] = useState(false);
+
+    // --- 1. FETCH PRODUCTS FROM API ---
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                // Fetch all products (isActive=true by default in backend)
+                const res = await fetch('/api/products');
+                const data = await res.json();
+                
+                if (res.ok) {
+                    setProducts(data.products || []);
+                } else {
+                    console.error("Failed to fetch products");
+                }
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchProducts();
+    }, []);
 
     useEffect(() => {
         const handleScroll = () => {
             const y = window.scrollY;
             setScrolled(y > 50);
-            setShowScrollTop(y > 400); // show button after some scroll
+            setShowScrollTop(y > 400); 
         };
 
-        // Run once on mount so state matches initial position
         handleScroll();
-
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
 
-    // --- Filtering Logic ---
+    // --- Filtering Logic (Client-Side) ---
     const filteredProducts = useMemo(() => {
         let list = [...products];
 
-        if (category !== "All") list = list.filter((p) => p.category.toLowerCase() === category.toLowerCase());
-        if (idealFor !== "All") list = list.filter((p) => p.idealFor.toLowerCase() === idealFor.toLowerCase());
-        if (type !== "All") list = list.filter((p) => p.type.toLowerCase() === type.toLowerCase());
+        // Ensure case-insensitive comparison matches your DB values
+        if (category !== "All") list = list.filter((p) => p.category?.toLowerCase() === category.toLowerCase());
+        if (idealFor !== "All") list = list.filter((p) => p.idealFor?.toLowerCase() === idealFor.toLowerCase());
+        if (type !== "All") list = list.filter((p) => p.type?.toLowerCase() === type.toLowerCase());
 
         if (search.trim()) {
             const q = search.toLowerCase();
             list = list.filter(
                 (p) =>
                     p.name.toLowerCase().includes(q) ||
-                    p.description.toLowerCase().includes(q) ||
-                    p.tags.some((tag) => tag.toLowerCase().includes(q))
+                    p.description?.toLowerCase().includes(q) ||
+                    p.tags?.some((tag) => tag.toLowerCase().includes(q))
             );
         }
 
@@ -75,7 +99,7 @@ export default function ShopPage() {
         else if (sortBy === "price-high-low") list.sort((a, b) => b.price - a.price);
 
         return list;
-    }, [category, idealFor, type, sortBy, search]);
+    }, [products, category, idealFor, type, sortBy, search]); // Added 'products' dependency
 
     const activeFiltersCount =
         (category !== "All" ? 1 : 0) +
@@ -168,14 +192,14 @@ export default function ShopPage() {
                                         {/* Sort Dropdown */}
                                         <div className="relative group">
                                             <Select value={sortBy} onValueChange={setSortBy}>
-                                                <SelectTrigger className="w-[180px] cursor-pointer">
+                                                <SelectTrigger className="w-[180px]  ">
                                                     <SelectValue placeholder="Sort by" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectGroup>
                                                         <SelectLabel>Sort by</SelectLabel>
                                                         {SORT_OPTIONS.map((opt) => (
-                                                            <SelectItem key={opt.value} value={opt.value} className="cursor-pointer">{opt.label}</SelectItem>
+                                                            <SelectItem key={opt.value} value={opt.value} className=" ">{opt.label}</SelectItem>
                                                         ))}
                                                     </SelectGroup>
                                                 </SelectContent>
@@ -186,27 +210,34 @@ export default function ShopPage() {
                             </div>
                         </div>
 
-                        {/* --- PRODUCT GRID --- */}
-                        {filteredProducts.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center py-20 border border-dashed border-zinc-300 rounded-3xl bg-white/50">
-                                <Search className="h-10 w-10 text-zinc-300 mb-4" />
-                                <p className="text-sm text-zinc-500 mb-4">No styles found matching your criteria.</p>
-                                <button
-                                    onClick={clearFilters}
-                                    className="text-xs font-bold uppercase tracking-widest px-6 py-3 rounded-full bg-zinc-900 text-white hover:bg-violet-600 transition-colors"
-                                >
-                                    Clear All Filters
-                                </button>
+                        {/* --- LOADING STATE --- */}
+                        {isLoading ? (
+                            <div className="flex flex-col items-center justify-center py-32">
+                                <Loader2 className="h-10 w-10 text-violet-600 animate-spin mb-4" />
+                                <p className="text-zinc-500 text-sm">Loading collection...</p>
                             </div>
                         ) : (
-                            // grid-cols-3 -> grid-cols-4 for smaller cards
-                            <motion.div layout className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-                                <AnimatePresence mode="popLayout">
-                                    {filteredProducts.map((product, index) => (
-                                        <ProductCard key={product.slug} product={product} index={index} />
-                                    ))}
-                                </AnimatePresence>
-                            </motion.div>
+                            /* --- PRODUCT GRID --- */
+                            filteredProducts.length === 0 ? (
+                                <div className="flex flex-col items-center justify-center py-20 border border-dashed border-zinc-300 rounded-3xl bg-white/50">
+                                    <Search className="h-10 w-10 text-zinc-300 mb-4" />
+                                    <p className="text-sm text-zinc-500 mb-4">No styles found matching your criteria.</p>
+                                    <button
+                                        onClick={clearFilters}
+                                        className="text-xs font-bold uppercase tracking-widest px-6 py-3 rounded-full bg-zinc-900 text-white hover:bg-violet-600 transition-colors"
+                                    >
+                                        Clear All Filters
+                                    </button>
+                                </div>
+                            ) : (
+                                <motion.div layout className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                                    <AnimatePresence mode="popLayout">
+                                        {filteredProducts.map((product, index) => (
+                                            <ProductCard key={product.slug || product._id} product={product} index={index} />
+                                        ))}
+                                    </AnimatePresence>
+                                </motion.div>
+                            )
                         )}
                     </div>
                 </div>
@@ -233,7 +264,7 @@ export default function ShopPage() {
                         transition={{ duration: 0.25 }}
                         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                         aria-label="Scroll to top"
-                        className="fixed bottom-6 right-4 md:bottom-8 md:right-8 z-40 h-11 w-11 rounded-full bg-black/90 backdrop-blur-sm shadow-lg shadow-violet-900/70 flex items-center justify-center text-zinc-100 hover:-translate-y-1 hover:shadow-xl active:scale-95 transition-all duration-300 cursor-pointer"
+                        className="fixed bottom-6 right-4 md:bottom-8 md:right-8 z-40 h-11 w-11 rounded-full bg-black/90 backdrop-blur-sm shadow-lg shadow-violet-900/70 flex items-center justify-center text-zinc-100 hover:-translate-y-1 hover:shadow-xl active:scale-95 transition-all duration-300  "
                     >
                         <ArrowBigUp className="h-5 w-5" />
                     </motion.button>

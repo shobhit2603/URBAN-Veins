@@ -42,7 +42,7 @@ export default function Navbar() {
                     <motion.h2
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="text-3xl md:text-4xl font-[Stardom-Regular] font-bold cursor-pointer tracking-tighter mix-blend-difference"
+                        className="text-3xl md:text-4xl font-[Stardom-Regular] font-bold   tracking-tighter mix-blend-difference"
                     >
                         URBAN <span className="text-lime-500">Veins.</span>
                     </motion.h2>
@@ -50,7 +50,7 @@ export default function Navbar() {
 
                 {/* Right: Icons */}
                 <div className="flex items-center gap-6 mix-blend-difference">
-                    <div className="group cursor-pointer">
+                    <div className="group  ">
                         <motion.div whileHover={{ scale: 1.15 }} whileTap={{ scale: 1 }}>
                             <Link href="/login" className="hover:text-lime-500 transition-colors duration-200" >
                                 <UserRound size={22} strokeWidth={2} />
