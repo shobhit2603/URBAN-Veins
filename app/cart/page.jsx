@@ -9,7 +9,7 @@ import { Minus, Plus, Trash2, ArrowRight, ShoppingBag } from "lucide-react";
 export default function CartPage() {
     const { cartItems, updateQuantity, removeFromCart, subtotal } = useCart();
     const shipping = subtotal > 5000 ? 0 : 200; // Example logic: Free shipping over ₹5000
-    const total = subtotal + shipping;
+    const total = subtotal + shipping; 
 
     return (
         <div className="min-h-screen w-full bg-[#FAFAFA] text-zinc-900 relative pt-24 md:pt-32 pb-20 px-4 md:px-8 selection:bg-lime-400 selection:text-zinc-900">

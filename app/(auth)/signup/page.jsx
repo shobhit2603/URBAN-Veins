@@ -4,7 +4,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Eye, EyeOff, ArrowRight, User, Phone } from "lucide-react";
 import Image from "next/image";
-// --- NEW IMPORTS ---
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -26,7 +25,9 @@ export default function Signup() {
     const [isLoading, setIsLoading] = useState(false);
     const [focusedField, setFocusedField] = useState(null);
     
-    // --- NEW: Router for redirection ---
+    // --- FIX 1: Added missing 'message' state ---
+    const [message, setMessage] = useState(""); 
+    
     const router = useRouter();
 
     const handleInputChange = (e) => {
@@ -34,10 +35,10 @@ export default function Signup() {
         setFormData(prev => ({ ...prev, [id]: value }));
     };
 
-    // --- NEW: Handle Signup & Auto-Login ---
     const handleSignup = async (e) => {
         e.preventDefault();
         setIsLoading(true);
+        setMessage(""); // Clear previous messages
 
         try {
             // 1. Register User
@@ -52,9 +53,9 @@ export default function Signup() {
             const data = await res.json();
 
             if (res.ok) {
-                console.log("Success:", data.message);
+                setMessage("Registration successful! Logging you in...");
                 
-                // 2. Auto-Login if registration success
+                // 2. Auto-Login
                 const loginResult = await signIn("credentials", {
                     redirect: false,
                     email: formData.email,
@@ -63,19 +64,32 @@ export default function Signup() {
 
                 if (loginResult?.error) {
                     console.error("Auto-login failed:", loginResult.error);
-                    router.push('/login'); // Fallback
+                    router.push('/login');
                 } else {
+                    // --- FIX 2: Correct LocalStorage Key ('urban-veins-cart') ---
+                    const localCartJson = localStorage.getItem("urban-veins-cart") || "[]";
+                    const localCart = JSON.parse(localCartJson);
+
+                    if (localCart.length > 0) {
+                        await fetch('/api/cart/merge', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ localCart }),
+                        });
+                        localStorage.removeItem("urban-veins-cart");
+                    }
+                    // --- END SYNC LOGIC ---
                     router.refresh();
-                    router.push('/'); // Redirect to Home
+                    router.push('/');
                 }
             } else {
                 console.error("Error:", data.message);
-                alert(data.message || "Registration failed."); // Simple feedback
+                setMessage(data.message || "Registration failed.");
                 setIsLoading(false);
             }
         } catch (error) {
             console.error("Network Error:", error);
-            alert("Something went wrong. Please try again.");
+            setMessage("Something went wrong. Please try again.");
             setIsLoading(false);
         }
     };
@@ -145,7 +159,6 @@ export default function Signup() {
                             {/* Social Signup */}
                             <div className="mt-2">
                                 <div className="grid grid-cols-2 gap-4 mt-2">
-                                    {/* --- ADDED onClick HANDLERS --- */}
                                     <button 
                                         type="button" 
                                         onClick={() => signIn('google', { callbackUrl: '/' })}
@@ -293,6 +306,13 @@ export default function Signup() {
                                     </span>
                                 </label>
                             </div>
+
+                            {/* Status Message */}
+                            {message && (
+                                <div className={`text-sm text-center font-medium ${message.includes("successful") ? "text-green-600" : "text-red-500"}`}>
+                                    {message}
+                                </div>
+                            )}
 
                             {/* Create Account Button */}
                             <button

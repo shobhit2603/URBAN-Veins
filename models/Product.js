@@ -11,7 +11,7 @@ const VariantSchema = new mongoose.Schema(
   },
   { _id: false } // prevents unnecessary _id in each variant
 );
-
+ 
 // ================================
 // Product Schema
 // ================================

@@ -30,20 +30,37 @@ export default function LoginPage() {
 
         try {
             const result = await signIn("credentials", {
-                redirect: false, // Don't redirect automatically, we'll handle it
-                email: email,
-                password: password,
+                redirect: false, 
+                email: email, 
+                password: password, 
             });
 
             if (result?.error) {
-                // Login failed
                 setError("Invalid email or password");
                 console.error("Login Failed:", result.error);
             } else {
-                // Login successful
                 console.log("Login Successful!");
-                router.refresh(); // Refresh to update session state
-                router.push("/"); // Redirect to homepage
+
+                // --- NEW: SYNC CART LOGIC ---
+                // 1. Get cart from LocalStorage (Adjust key name if different)
+                const localCartJson = localStorage.getItem("urban-veins-cart") || "[]"; 
+                const localCart = JSON.parse(localCartJson);
+
+                if (localCart.length > 0) {
+                    // 2. Send to Backend
+                    await fetch('/api/cart/merge', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ localCart }),
+                    });
+                    
+                    // 3. Clear Local Storage to prevent duplicates later
+                    localStorage.removeItem("urban-veins-cart");
+                }
+                // --- END SYNC LOGIC ---
+
+                router.refresh(); 
+                router.push("/"); 
             }
         } catch (error) {
             console.error("Unexpected Error:", error);

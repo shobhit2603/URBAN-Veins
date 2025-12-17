@@ -36,7 +36,7 @@ const AddressSchema = new mongoose.Schema({
   postalCode: { type: String, required: true },
   country: { type: String, required: true },
 });
-
+ 
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,

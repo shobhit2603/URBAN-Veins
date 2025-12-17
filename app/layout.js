@@ -6,6 +6,7 @@ import { ReactLenis } from "@/lib/lenis";
 import { CartProvider } from "./context/CartContext";
 import { Toaster } from "@/components/ui/sonner";
 import Cursor from "@/components/ui/Cursor";
+import { SessionProvider } from "next-auth/react";
 
 export const metadata = {
   title: "URBAN Veins",
@@ -21,13 +22,15 @@ export default function RootLayout({ children }) {
       <body
         className="antialiased font-[Satoshi-Regular] selection:bg-violet-500 selection:text-white cursor-none">
         <ReactLenis root>
-          <CartProvider>
+          <SessionProvider>
+            <CartProvider>
             <Cursor />
             <Navbar />
             {children}
             <Toaster />
             <Footer />
           </CartProvider>
+          </SessionProvider>
         </ReactLenis>
       </body>
     </html>
