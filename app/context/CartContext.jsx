@@ -79,7 +79,7 @@ export function CartProvider({ children }) {
                         quantity,
                         color,
                         size
-                    })
+                    }) 
                 });
                 if (res.ok) {
                     const data = await res.json();

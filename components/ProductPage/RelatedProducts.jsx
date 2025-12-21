@@ -62,7 +62,7 @@ export default function RelatedProducts({ currentSlug, category }) {
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                 {related.map((item, idx) => (
-                    <Link key={idx} href={`/shop/${item.slug}`} className="group block">
+                    <Link key={idx} href={`/product/${item.slug}`} className="group block">
                         <div className="relative aspect-3/4 bg-zinc-100 hover:rounded-4xl transition-all duration-300 overflow-hidden mb-3">
                             {item.images && item.images[0] && (
                                 <Image

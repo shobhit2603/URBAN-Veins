@@ -51,10 +51,19 @@ export default function ProductDetails({ product }) {
                     <div className="h-4 w-px bg-zinc-300" />
                     <div className="flex items-center gap-1">
                         <div className="flex text-yellow-400">
-                            {[...Array(4)].map((_, i) => <Star key={i} size={14} fill="currentColor" />)}
-                            <Star size={14} fill="currentColor" className="text-zinc-200" />
+                            {[...Array(5)].map((_, i) => (
+                                <Star 
+                                    key={i} 
+                                    size={14} 
+                                    fill={i < Math.round(product.averageRating || 0) ? "currentColor" : "none"} 
+                                    className={i < Math.round(product.averageRating || 0) ? "text-yellow-400" : "text-zinc-200"}
+                                />
+                            ))}
                         </div>
-                        <span className="text-xs font-bold text-zinc-500 ml-1">(4.2)</span>
+                        <span className="text-xs font-bold text-zinc-500 ml-1">
+                            ({product.averageRating ? product.averageRating.toFixed(1) : "0.0"}) 
+                            {product.numReviews ? ` • ${product.numReviews} reviews` : ""}
+                        </span>
                     </div>
                 </div>
             </div>

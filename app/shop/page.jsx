@@ -173,7 +173,7 @@ export default function ShopPage() {
                                     <p className="hidden md:block text-xs text-zinc-500 font-medium uppercase tracking-wider">
                                         {filteredProducts.length} Results
                                     </p>
-
+ 
                                     <div className="flex items-center gap-2 ml-auto">
                                         {/* Mobile Filter Trigger */}
                                         <button
