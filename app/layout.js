@@ -20,11 +20,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className="antialiased font-[Satoshi-Regular] selection:bg-violet-500 selection:text-white cursor-none">
+        className="antialiased font-[Satoshi-Regular] selection:bg-violet-500 selection:text-white">
         <ReactLenis root>
           <SessionProvider>
             <CartProvider>
-            <Cursor />
+            {/* <Cursor /> */}
             <Navbar />
             {children}
             <Toaster />
