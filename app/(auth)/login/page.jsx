@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Eye, EyeOff, ArrowRight } from "lucide-react";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Mail, Eye, EyeOff } from "lucide-react"; // Removed ArrowRight, User, Phone as they were unused or not in the snippet provided but kept imports clean based on context
 import Image from "next/image";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -41,7 +41,7 @@ export default function LoginPage() {
             } else {
                 console.log("Login Successful!");
 
-                // --- NEW: SYNC CART LOGIC ---
+                // --- SYNC CART LOGIC ---
                 // 1. Get cart from LocalStorage (Adjust key name if different)
                 const localCartJson = localStorage.getItem("urban-veins-cart") || "[]"; 
                 const localCart = JSON.parse(localCartJson);
@@ -68,6 +68,12 @@ export default function LoginPage() {
         } finally {
             setIsLoading(false);
         }
+    };
+
+    // --- NEW: Social Login Handler ---
+    const handleSocialLogin = async (provider) => {
+        setIsLoading(true);
+        await signIn(provider, { callbackUrl: '/' });
     };
 
     return (
@@ -137,7 +143,7 @@ export default function LoginPage() {
                                 <label
                                     htmlFor="email"
                                     className={`absolute left-0 transition-all duration-300 pointer-events-none font-medium
-                                        ${focusedField === 'email' || email ? '-top-6 text-xs text-violet-600' : 'top-3 text-zinc-500 text-base'}
+                                    ${focusedField === 'email' || email ? '-top-6 text-xs text-violet-600' : 'top-3 text-zinc-500 text-base'}
                                     `}
                                 >
                                     EMAIL ADDRESS
@@ -163,7 +169,7 @@ export default function LoginPage() {
                                 <label
                                     htmlFor="password"
                                     className={`absolute left-0 transition-all duration-300 pointer-events-none font-medium
-                                        ${focusedField === 'password' || password ? '-top-6 text-xs text-violet-600' : 'top-3 text-zinc-500 text-base'}
+                                    ${focusedField === 'password' || password ? '-top-6 text-xs text-violet-600' : 'top-3 text-zinc-500 text-base'}
                                     `}
                                 >
                                     PASSWORD
@@ -183,7 +189,7 @@ export default function LoginPage() {
                                     <button
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute right-0 top-3 hover:text-violet-600 transition-colors text-zinc-400  "
+                                        className="absolute right-0 top-3 hover:text-violet-600 transition-colors text-zinc-400"
                                     >
                                         {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                                     </button>
@@ -204,10 +210,13 @@ export default function LoginPage() {
                                 </Link>
                             </div>
 
+                            {/* Error Message */}
+                            {error && <p className="text-red-500 text-sm text-center font-bold">{error}</p>}
+
                             {/* Modern Magnetic/Fill Button */}
                             <button
                                 disabled={isLoading}
-                                className="relative w-full h-14 mt-6 overflow-hidden rounded-full bg-[#0a0a0a] group disabled:opacity-70 disabled:cursor-not-allowed  "
+                                className="relative w-full h-14 mt-6 overflow-hidden rounded-full bg-[#0a0a0a] group disabled:opacity-70 disabled:cursor-not-allowed"
                             >
                                 <div className="absolute inset-0 w-full h-full bg-violet-500 translate-y-full transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:translate-y-0" />
 
@@ -223,7 +232,7 @@ export default function LoginPage() {
                                         </motion.div>
                                     ) : (
                                         <>
-                                            Sign In <ArrowRight size={18} />
+                                            Sign In
                                         </>
                                     )}
                                 </motion.span>
@@ -238,13 +247,22 @@ export default function LoginPage() {
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4 mt-4">
-                                    <button type="button" className="flex items-center justify-center border border-zinc-400 rounded-lg py-2   hover:bg-neutral-100/50 transition-colors">
+                                    <button 
+                                        type="button" 
+                                        onClick={() => handleSocialLogin('google')}
+                                        className="flex items-center justify-center border border-zinc-400 rounded-lg py-2 hover:bg-neutral-100/50 transition-colors"
+                                    >
                                         <Image src="/Google-Icon.svg" alt="Google logo" width={20} height={20} className="mr-2" />
                                         Google
                                     </button>
-                                    <button type="button" className="flex items-center justify-center border border-zinc-400 rounded-lg py-2   hover:bg-neutral-100/50 transition-colors">
-                                        <Image src="/Facebook-Icon.svg" alt="Google logo" width={20} height={20} className="mr-2" />
-                                        Facebook
+                                    <button 
+                                        type="button" 
+                                        onClick={() => handleSocialLogin('apple')} // Changed to apple as per prompt
+                                        className="flex items-center justify-center border border-zinc-400 rounded-lg py-2 hover:bg-neutral-100/50 transition-colors"
+                                    >
+                                        {/* Assuming you have an Apple Icon or use Facebook icon as placeholder if Apple icon is missing */}
+                                        <Image src="/Facebook-Icon.svg" alt="Apple logo" width={20} height={20} className="mr-2" />
+                                        Apple
                                     </button>
                                 </div>
                             </div >

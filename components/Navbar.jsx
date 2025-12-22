@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import { ShoppingBag, UserRound } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { MenuToggle } from "./ui/MenuToggle";
@@ -11,6 +12,7 @@ import { useCart } from "@/app/context/CartContext";
 export default function Navbar() {
     const { cartCount } = useCart();
     const [isOpen, setIsOpen] = useState(false);
+    const { data: session } = useSession();
 
     // Lock body scroll when menu is open
     useEffect(() => {
@@ -52,7 +54,10 @@ export default function Navbar() {
                 <div className="flex items-center gap-6 mix-blend-difference">
                     <div className="group  ">
                         <motion.div whileHover={{ scale: 1.15 }} whileTap={{ scale: 1 }}>
-                            <Link href="/login" className="hover:text-lime-500 transition-colors duration-200" >
+                            <Link 
+                                href={session ? "/profile" : "/login"} 
+                                className="hover:text-lime-500 transition-colors duration-200 flex items-center" 
+                            >
                                 <UserRound size={22} strokeWidth={2} />
                             </Link>
                         </motion.div>
