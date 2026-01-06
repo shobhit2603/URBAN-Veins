@@ -66,7 +66,7 @@ export const FullScreenMenu = ({ isOpen, onClose }) => {
                                 transition={{ delay: 0.7 }}
                                 className="bg-zinc-900/50 backdrop-blur-sm p-6 rounded-lg max-w-sm border border-zinc-800 hidden md:block"
                             >
-                                <h4 className="text-lime-500 font-bold mb-2 text-sm uppercase tracking-widest">Urban Veins Inc.</h4>
+                                <h4 className="text-lime-500 font-bold mb-2 text-sm uppercase tracking-widest">The Paddler Inc.</h4>
                                 <p className="text-zinc-400 text-sm mb-4">Redefining streetwear with bold cuts and premium fabrics. Join the movement.</p>
                                 <div className="flex gap-4 items-center">
                                     <span className="flex relative h-2 w-2">
@@ -87,7 +87,7 @@ export const FullScreenMenu = ({ isOpen, onClose }) => {
                         className="w-full flex justify-between items-end border-t border-zinc-800 pt-6 z-10 max-sm:mb-10 max-sm:border-b max-sm:pb-6"
                     >
                         <div className="text-xs text-zinc-500 uppercase tracking-widest">
-                            © 2025 Urban Veins
+                            © 2025 The Paddler
                         </div>
                         <div className="flex gap-4 text-xs font-bold uppercase">
                             <Link href="#" className="hover:text-lime-500 transition-colors">Instagram</Link>

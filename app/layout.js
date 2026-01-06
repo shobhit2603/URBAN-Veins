@@ -9,7 +9,7 @@ import Cursor from "@/components/ui/Cursor";
 import { SessionProvider } from "next-auth/react";
 
 export const metadata = {
-  title: "URBAN Veins",
+  title: "THE Paddler",
   description: "Discover the latest trends in urban fashion with Urban Veins. Shop now for exclusive styles and unbeatable prices.",
   icons: {
     icon: "/logo.png",
@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
         <ReactLenis root>
           <SessionProvider>
             <CartProvider>
-            {/* <Cursor /> */}
+            <Cursor />
             <Navbar />
             {children}
             <Toaster />

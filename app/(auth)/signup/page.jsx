@@ -120,7 +120,7 @@ export default function Signup() {
                                 Join The <br className="hidden lg:block" /><span className="text-zinc-400">Cult.</span>
                             </h1>
                             <p className="text-zinc-500 text-sm md:text-base max-w-sm">
-                                Create your Urban Veins profile. Get early access to drops, track your orders, and become part of the movement.
+                                Create your Paddler profile. Get early access to drops, track your orders, and become part of the movement.
                             </p>
                         </motion.div>
 
@@ -153,7 +153,7 @@ export default function Signup() {
                             {/* Header for Mobile */}
                             <div className="lg:hidden mb-6 text-center">
                                 <h2 className="text-4xl font-[Stardom-Regular] font-bold tracking-tighter">JOIN THE <span className="text-zinc-400">CULT.</span></h2>
-                                <p className="text-zinc-500 text-sm">Be a part of the Urban Veins movement.</p>
+                                <p className="text-zinc-500 text-sm">Be a part of the The Paddler.</p>
                             </div>
 
                             {/* Social Signup */}
@@ -172,8 +172,8 @@ export default function Signup() {
                                         onClick={() => signIn('facebook', { callbackUrl: '/' })}
                                         className="flex items-center justify-center border border-zinc-400 rounded-lg py-2 hover:bg-neutral-100/50 transition-colors"
                                     >
-                                        <Image src="/Facebook-Icon.svg" alt="Facebook" width={20} height={20} className="mr-2" />
-                                        Facebook
+                                        <Image src="/Apple-Icon.svg" alt="Apple" width={18} height={18} className="mr-2" />
+                                        Apple
                                     </button>
                                 </div>
 
@@ -363,7 +363,7 @@ export default function Signup() {
                 >
                     {[...Array(4)].map((_, i) => (
                         <span key={i} className="text-xs font-mono font-bold uppercase text-zinc-400 px-8 flex items-center gap-2">
-                            <span>Urban Veins Registration</span>
+                            <span>The Paddler Registration</span>
                             <div className="w-1 h-1 bg-violet-400 rounded-full" />
                             <span>Join The Movement</span>
                             <div className="w-1 h-1 bg-violet-400 rounded-full" />

@@ -261,7 +261,7 @@ export default function LoginPage() {
                                         className="flex items-center justify-center border border-zinc-400 rounded-lg py-2 hover:bg-neutral-100/50 transition-colors"
                                     >
                                         {/* Assuming you have an Apple Icon or use Facebook icon as placeholder if Apple icon is missing */}
-                                        <Image src="/Facebook-Icon.svg" alt="Apple logo" width={20} height={20} className="mr-2" />
+                                        <Image src="/Apple-Icon.svg" alt="Apple logo" width={18} height={18} className="mr-2" />
                                         Apple
                                     </button>
                                 </div>
@@ -291,7 +291,7 @@ export default function LoginPage() {
                 >
                     {[...Array(4)].map((_, i) => (
                         <span key={i} className="text-xs font-mono font-bold uppercase text-zinc-400 px-8 flex items-center gap-2">
-                            <span>Urban Veins Secure Login</span>
+                            <span>The Paddler Secure Login</span>
                             <div className="w-1 h-1 bg-violet-400 rounded-full" />
                             <span>Encrypted Connection</span>
                             <div className="w-1 h-1 bg-violet-400 rounded-full" />
