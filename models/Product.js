@@ -11,7 +11,7 @@ const VariantSchema = new mongoose.Schema(
   },
   { _id: false } // prevents unnecessary _id in each variant
 );
- 
+
 // ================================
 // Product Schema
 // ================================
@@ -42,18 +42,18 @@ const ProductSchema = new mongoose.Schema(
       required: [true, 'Please provide a price'],
       min: 0,
     },
-    discountPrice: { // Renamed from 'mrp' to align with previous discussions, optional
+    discountPrice: {
       type: Number,
       min: 0,
     },
 
     // Image Gallery
     images: {
-      type: [String], // Array of image URLs
+      type: [String],
       validate: [arrayLimit, '{PATH} must have at least 1 image'],
     },
     
-    // Category (Keeping as String for simplicity as per your schema)
+    // Category
     category: {
       type: String,    
       required: [true, "Please provide a category name"], 
@@ -63,7 +63,7 @@ const ProductSchema = new mongoose.Schema(
     // Filters
     idealFor: {
       type: String,
-      enum: ["men", "women", "unisex"], 
+      enum: ["men", "women", "unisex", "kids"],
       default: "unisex",
       index: true
     },
@@ -83,8 +83,7 @@ const ProductSchema = new mongoose.Schema(
     // Variants
     variants: [VariantSchema],
 
-    // Reviews (Reference to Review model)
-    // Note: If you haven't created the Review model yet, this ref will point to a non-existent model until you do.
+    // Reviews
     reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
     averageRating: { type: Number, default: 0 },
     numReviews: { type: Number, default: 0 },
@@ -103,8 +102,6 @@ function arrayLimit(val) {
 
 // -------------------------------
 // 🔍 Search Index
-// Enables full-text search for:
-// name, description, tags
 // -------------------------------
 ProductSchema.index({
   name: "text",
@@ -112,12 +109,7 @@ ProductSchema.index({
   tags: "text",
 });
 
-// Generate slug from name before saving
-ProductSchema.pre('save', function(next) {
-  if (this.isModified('name')) {
-    this.slug = this.name.toLowerCase().split(' ').join('-');
-  }
-  next();
-});
+// REMOVED THE pre('validate') HOOK TO FIX THE ERROR
+// We will handle slug generation in the API route instead.
 
 export default mongoose.models.Product || mongoose.model("Product", ProductSchema);

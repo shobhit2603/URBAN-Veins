@@ -43,12 +43,32 @@ export async function PUT(request, { params }) {
     const { slug } = await params;
     const body = await request.json();
 
-    // 2. Update Product
-    // { new: true } returns the updated document
-    // { runValidators: true } ensures updates follow schema rules (enums, required fields)
+    // 2. Prepare Update Data
+    // We explicitly extract fields to match the new Schema structure
+    const { 
+      name, slug: newSlug, description, price, discountPrice, 
+      images, category, idealFor, type, brand, tags, 
+      variants, isFeatured, isActive 
+    } = body;
+
+    const updateData = {
+      name, description, price, discountPrice, 
+      images, category, idealFor, type, brand, tags, 
+      variants, isFeatured, isActive 
+    };
+
+    // If a new slug is provided, update it; otherwise, keep the old one.
+    if (newSlug) {
+      updateData.slug = newSlug;
+    }
+
+    // Remove undefined fields so we don't overwrite existing data with nulls
+    Object.keys(updateData).forEach(key => updateData[key] === undefined && delete updateData[key]);
+
+    // 3. Update Product
     const updatedProduct = await Product.findOneAndUpdate(
       { slug: slug },
-      body,
+      updateData,
       { new: true, runValidators: true }
     );
 
@@ -63,7 +83,7 @@ export async function PUT(request, { params }) {
 
   } catch (error) {
     console.error('Error updating product:', error);
-    // Handle duplicate slug error if name is changed to an existing one
+    // Handle duplicate slug error
     if (error.code === 11000) {
       return NextResponse.json(
         { message: 'A product with this name/slug already exists.' },
