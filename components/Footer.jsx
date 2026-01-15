@@ -91,7 +91,7 @@ export default function Footer() {
 
                     <div className="flex flex-col md:items-end gap-1">
                         <p className="text-xs text-zinc-500 uppercase tracking-wider">
-                            © 2025 Urban Veins Inc.
+                            © 2025 The Paddler Inc.
                         </p>
                         <p className="text-[10px] text-zinc-700 uppercase tracking-widest">
                             Designed in India
@@ -113,10 +113,10 @@ export default function Footer() {
                 >
                     {/* Repeated text for seamless loop */}
                     <span className="text-[12vw] leading-none font-[Satoshi-Bold] font-black uppercase text-zinc-900/40 px-4">
-                        Urban Veins Streetwear
+                        The Paddler Streetwear
                     </span>
                     <span className="text-[12vw] leading-none font-[Satoshi-Bold] font-black uppercase text-zinc-900/40 px-4">
-                        Urban Veins Streetwear
+                        The Paddler Streetwear
                     </span>
                 </motion.div>
             </div>
