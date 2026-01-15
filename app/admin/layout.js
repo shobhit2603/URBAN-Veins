@@ -70,9 +70,7 @@ export default function AdminLayout({ children }) {
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         <div className="flex flex-col h-full">
-          <div className="p-6 border-b border-zinc-100">
-            <h1 className="text-2xl font-bold font-[Stardom-Regular] tracking-tight">Urban Admin</h1>
-          </div>
+          
           
           <nav className="flex-1 flex flex-col p-4 gap-1 overflow-y-auto">
             {navItems.map((item) => {
