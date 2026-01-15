@@ -65,7 +65,7 @@ export default function AdminLayout({ children }) {
           - On Desktop (static), we remove it because the outer div handles the spacing.
       */}
       <aside className={`
-        fixed lg:static inset-y-0 left-0 z-40 w-64 bg-white border-r border-zinc-200 transform transition-transform duration-200 ease-in-out
+        fixed lg:static inset-y-0 left-0 w-64 bg-white border-r border-zinc-200 transform transition-transform duration-200 ease-in-out
         pt-24 lg:pt-0
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
