@@ -1,0 +1,7 @@
+<svg width="800" height="1000" viewBox="0 0 800 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="1000" rx="48" fill="#111827"/>
+  <path d="M300 220H500L534 360L488 780H426L400 582L374 780H312L266 360L300 220Z" fill="#E5E7EB"/>
+  <path d="M400 220V582" stroke="#9CA3AF" stroke-width="16"/>
+  <path d="M312 780H488" stroke="#9CA3AF" stroke-width="16" stroke-linecap="round"/>
+  <text x="400" y="890" fill="#F9FAFB" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" text-anchor="middle">Urban Veins</text>
+</svg>

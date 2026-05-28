@@ -2,21 +2,40 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnection';
 import Product from '@/models/Product';
 import { auth } from '@/auth';
+import { findDemoProductBySlug } from '@/lib/productsFallback';
 
 // GET: Fetch a single product by slug
 export async function GET(request, { params }) {
   try {
-    await dbConnect();
-    // In Next.js 15+, params is a Promise and must be awaited
     const { slug } = await params;
 
-    const product = await Product.findOne({ slug: slug });
+    try {
+      await dbConnect();
 
-    if (!product) {
-      return NextResponse.json({ message: 'Product not found' }, { status: 404 });
+      const product = await Product.findOne({ slug: slug });
+
+      if (!product) {
+        const fallbackProduct = findDemoProductBySlug(slug);
+
+        if (!fallbackProduct) {
+          return NextResponse.json({ message: 'Product not found' }, { status: 404 });
+        }
+
+        return NextResponse.json({ product: fallbackProduct, fallback: true }, { status: 200 });
+      }
+
+      return NextResponse.json({ product }, { status: 200 });
+    } catch (databaseError) {
+      console.warn('Product detail API falling back to demo catalog:', databaseError.message);
+
+      const product = findDemoProductBySlug(slug);
+
+      if (!product) {
+        return NextResponse.json({ message: 'Product not found' }, { status: 404 });
+      }
+
+      return NextResponse.json({ product, fallback: true }, { status: 200 });
     }
-
-    return NextResponse.json({ product }, { status: 200 });
   } catch (error) {
     console.error('Error fetching product:', error);
     return NextResponse.json(
@@ -45,16 +64,16 @@ export async function PUT(request, { params }) {
 
     // 2. Prepare Update Data
     // We explicitly extract fields to match the new Schema structure
-    const { 
-      name, slug: newSlug, description, price, discountPrice, 
-      images, category, idealFor, type, brand, tags, 
-      variants, isFeatured, isActive 
+    const {
+      name, slug: newSlug, description, price, discountPrice,
+      images, category, idealFor, type, brand, tags,
+      variants, isFeatured, isActive
     } = body;
 
     const updateData = {
-      name, description, price, discountPrice, 
-      images, category, idealFor, type, brand, tags, 
-      variants, isFeatured, isActive 
+      name, description, price, discountPrice,
+      images, category, idealFor, type, brand, tags,
+      variants, isFeatured, isActive
     };
 
     // If a new slug is provided, update it; otherwise, keep the old one.

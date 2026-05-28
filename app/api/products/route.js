@@ -2,58 +2,69 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnection';
 import Product from '@/models/Product';
 import { auth } from '@/auth';
+import { filterProducts, getDemoProducts } from '@/lib/productsFallback';
+
+function readFilters(searchParams) {
+  return {
+    search: searchParams.get('search'),
+    category: searchParams.get('category'),
+    idealFor: searchParams.get('idealFor'),
+    type: searchParams.get('type'),
+    sort: searchParams.get('sort'),
+    featured: searchParams.get('featured'),
+  };
+}
 
 export async function GET(request) {
   try {
-    await dbConnect();
-
     const { searchParams } = new URL(request.url);
-    
-    // Extraction filters
-    const search = searchParams.get('search');
-    const category = searchParams.get('category');
-    const idealFor = searchParams.get('idealFor');
-    const type = searchParams.get('type');
-    const sort = searchParams.get('sort'); // price-asc, price-desc, newest
-    const featured = searchParams.get('featured');
+    const filters = readFilters(searchParams);
 
-    // Build the query object
-    let query = { isActive: true };
+    try {
+      await dbConnect();
 
-    // 1. Text Search (Name, Description, Tags)
-    if (search) {
-      query.$text = { $search: search };
+      const query = { isActive: true };
+
+      if (filters.search) {
+        query.$text = { $search: filters.search };
+      }
+
+      if (filters.category && filters.category !== 'all') {
+        query.category = { $regex: new RegExp(`^${filters.category}$`, 'i') };
+      }
+
+      if (filters.idealFor && filters.idealFor !== 'all') {
+        query.idealFor = filters.idealFor;
+      }
+
+      if (filters.type && filters.type !== 'all') {
+        query.type = filters.type;
+      }
+
+      if (filters.featured === 'true') {
+        query.isFeatured = true;
+      }
+
+      let sortOption = { createdAt: -1 };
+      if (filters.sort === 'price-asc') sortOption = { price: 1 };
+      if (filters.sort === 'price-desc') sortOption = { price: -1 };
+
+      const products = await Product.find(query).sort(sortOption);
+
+      if (products.length > 0) {
+        return NextResponse.json({ products }, { status: 200 });
+      }
+
+      const fallbackProducts = filterProducts(getDemoProducts(), filters);
+
+      return NextResponse.json({ products: fallbackProducts, fallback: true }, { status: 200 });
+    } catch (databaseError) {
+      console.warn('Products API falling back to demo catalog:', databaseError.message);
+
+      const products = filterProducts(getDemoProducts(), filters);
+
+      return NextResponse.json({ products, fallback: true }, { status: 200 });
     }
-
-    // 2. Category Filter (Case Insensitive)
-    if (category && category !== 'all') {
-      // Allows "hoodies" to match "Hoodies"
-      query.category = { $regex: new RegExp(`^${category}$`, 'i') };
-    }
-
-    // 3. Gender/Target Filter
-    if (idealFor && idealFor !== 'all') {
-      query.idealFor = idealFor;
-    }
-
-    // 4. Product Type Filter
-    if (type && type !== 'all') {
-      query.type = type;
-    }
-
-    // 5. Featured Filter
-    if (featured === 'true') {
-      query.isFeatured = true;
-    }
-
-    // Sorting Logic
-    let sortOption = { createdAt: -1 }; // Default: Newest first
-    if (sort === 'price-asc') sortOption = { price: 1 };
-    if (sort === 'price-desc') sortOption = { price: -1 };
-
-    const products = await Product.find(query).sort(sortOption);
-
-    return NextResponse.json({ products }, { status: 200 });
 
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -79,10 +90,10 @@ export async function POST(request) {
 
     // 2. Get Data
     const body = await request.json();
-    const { 
-      name, slug, description, price, discountPrice, 
-      images, category, idealFor, type, brand, tags, 
-      variants, isFeatured, isActive 
+    const {
+      name, slug, description, price, discountPrice,
+      images, category, idealFor, type, brand, tags,
+      variants, isFeatured, isActive
     } = body;
 
     // 3. Validate Required Fields (Including new ones)
@@ -94,20 +105,20 @@ export async function POST(request) {
     }
 
     const newProduct = await Product.create({
-        name,
-        slug,
-        description,
-        price,
-        discountPrice,
-        images,
-        category,
-        idealFor,
-        type,
-        brand,
-        tags,
-        variants,
-        isFeatured,
-        isActive
+      name,
+      slug,
+      description,
+      price,
+      discountPrice,
+      images,
+      category,
+      idealFor,
+      type,
+      brand,
+      tags,
+      variants,
+      isFeatured,
+      isActive
     });
 
     return NextResponse.json(
